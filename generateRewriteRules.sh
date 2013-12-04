@@ -1,0 +1,1 @@
+php -r "require 'generateRewriteRules.php'; getModRewriteRules('$1', '$2');"
