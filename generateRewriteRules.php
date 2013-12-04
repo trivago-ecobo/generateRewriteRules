@@ -25,13 +25,17 @@ function getModRewriteRules($xmlPath, $newDomain)
 
     foreach($xmlChannel->item as $item)
     {
-        $link = $item->link;
-        $pathPatter = "/^(https?):(\/\/([a-z0-9+\$_-]\.?)+)*\/?[0-9]+\/?[0-9]+/";
-        preg_match($pathPatter, $link, $matches);
-        if (sizeof($matches) > 0 )
+        $postType = $item->children('http://wordpress.org/export/1.2/')->post_type;
+        if ($postType == 'post')
         {
-            $links = $link . "\n";
-            file_put_contents($linkFilePath, $links, FILE_APPEND);
+            $link = $item->link;
+            $pathPatter = "/^(https?):(\/\/([a-z0-9+\$_-]\.?)+)*\/?[0-9]+\/?[0-9]+/";
+            preg_match($pathPatter, $link, $matches);
+            if (sizeof($matches) > 0 )
+            {
+                $links = $link . "\n";
+                file_put_contents($linkFilePath, $links, FILE_APPEND);
+            }
         }
     }
 
