@@ -7,5 +7,5 @@ Get a xml file (exported from wordpress), create a new file only with the links 
 
 To use, open terminal:
 
-sh parseXmlScript.sh 'pathToXml' 'newDomain'
+sh generateRewriteRules.sh 'pathToXml' 'newDomain'
 
