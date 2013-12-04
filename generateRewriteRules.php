@@ -47,7 +47,7 @@ function getModRewriteRules($xmlPath, $newDomain)
 
         $pathExplode = explode('/', $path);
 
-        $rewrite = "RedirectMatch 301 ^/(.*)/" . $pathExplode[3] . "/(.*) " . $newDomain . $path . "\n";
+        $rewrite = "RedirectMatch 301 ^(.*)/" . $pathExplode[3] . "/(.*) " . $newDomain . $path . "\n";
 
         file_put_contents($rewriteFilePath, $rewrite, FILE_APPEND);
     }
