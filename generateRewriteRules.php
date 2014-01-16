@@ -15,14 +15,17 @@
  */
 function getModRewriteRules($xmlPath, $newDomain)
 {
+    //load the xml file
     $xmlFile = simplexml_load_file($xmlPath);
-
     $xmlChannel = $xmlFile->channel;
 
+    // path to the links.txt
     $linkFilePath = __DIR__."/links.txt";
 
+    // remove the all content of links.txt
     file_put_contents($linkFilePath, '');
 
+    // take all the links
     foreach($xmlChannel->item as $item)
     {
         $postType = $item->children('http://wordpress.org/export/1.2/')->post_type;
@@ -39,11 +42,13 @@ function getModRewriteRules($xmlPath, $newDomain)
         }
     }
 
+    // create new file rewrite.txt
     $fileLinks = file($linkFilePath, FILE_IGNORE_NEW_LINES);
     $rewriteFilePath = __DIR__."/rewrite.txt";
 
     file_put_contents($rewriteFilePath, '');
 
+    // Add all the redirects rules
     foreach($fileLinks as $link)
     {
         $parseUrl = parse_url($link);
@@ -51,10 +56,14 @@ function getModRewriteRules($xmlPath, $newDomain)
 
         $pathExplode = explode('/', $path);
 
-        $rewrite = "RedirectMatch 301 ^(.*)/" . $pathExplode[3] . "/(.*) " . $newDomain . $path . "\n";
+        $rewrite = "RedirectMatch 301 ^(.*)/" . $pathExplode[4] . "/(.*) " . $newDomain . $path . "\n";
 
         file_put_contents($rewriteFilePath, $rewrite, FILE_APPEND);
     }
+
+    // Redirecting to index if the link doesn't exist before
+    $errorDocumentRedirect = "RedirectMatch 301 ^(.*) " . $newDomain . "\n";
+    file_put_contents($rewriteFilePath, $errorDocumentRedirect, FILE_APPEND);
 }
 
 
